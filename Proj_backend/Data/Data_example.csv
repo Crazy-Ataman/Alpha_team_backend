@@ -1,0 +1,11 @@
+CustomerID,FirstName,LastName,Age,Gender,Height_cm,Weight_kg,HealthStatus,LastContactDate
+1,John,Doe,72,male,175,85,poor,2023-01-15
+2,Jane,Smith,45,female,160,50,good,2024-04-01
+3,Bob,Johnson,68,male,180,95,fair,2023-09-10
+4,Mary,Brown,25,female,165,70,excellent,2024-05-01
+5,Paul,Jones,34,male,172,105,poor,2023-02-20
+6,Linda,White,81,female,158,48,poor,2022-12-01
+7,James,Miller,59,male,182,120,fair,2023-10-15
+8,Susan,Clark,63,female,168,78,good,2023-08-05
+9,Michael,Wilson,29,male,175,62,good,2024-03-10
+10,Elizabeth,Moore,70,female,162,88,poor,2023-07-21
