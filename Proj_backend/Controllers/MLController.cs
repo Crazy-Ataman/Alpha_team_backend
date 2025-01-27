@@ -22,14 +22,33 @@ namespace Proj_backend.Controllers
 
         protected ITransformer GetOrCreateModel(string dataPath, char separator, bool hasHeader, IEstimator<ITransformer> pipeline)
         {
-            if (System.IO.File.Exists(_modelPath))
+            try
             {
-                return _mlService.LoadModel(_modelPath);
-            }
+                if (System.IO.File.Exists(_modelPath))
+                {
+                    return _mlService.LoadModel(_modelPath);
+                }
 
-            var data = _mlService.LoadData(dataPath, separator, hasHeader);
-            _mlService.PreviewData(data);
-            return _mlService.TrainModel(data, pipeline, _modelPath);
+                CheckDataPath(dataPath);
+                var data = _mlService.LoadData(dataPath, separator, hasHeader);
+                _mlService.PreviewData(data);
+                return _mlService.TrainModel(data, pipeline, _modelPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        private static string CheckDataPath(string dataPath)
+        {
+            string _dataPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, dataPath));
+            if (!System.IO.File.Exists(_dataPath))
+            {
+                throw new FileNotFoundException($"Data file not found at path: {_dataPath}");
+            }
+            return _dataPath;
         }
     }
 }

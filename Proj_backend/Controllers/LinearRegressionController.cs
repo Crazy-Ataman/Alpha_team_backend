@@ -7,6 +7,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Proj_backend.Services;
 using CsvHelper;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Proj_backend.Controllers
 {
@@ -15,38 +17,51 @@ namespace Proj_backend.Controllers
     public class Controller_LinearRegression : BaseMLController<CustomerData, CostPrediction>
     {
         public Controller_LinearRegression()
-            : base("././ML_Models/LineReg.zip") { }
+            : base(Path.Combine(AppContext.BaseDirectory, "../../../ML_Models/LineReg.zip")) { }
 
-        const string trainingDataPath = "././Data/Training_data.csv";
+        string trainingDataPath = Path.Combine(AppContext.BaseDirectory, "../../../Data/Training_data.csv");
+        //const string trainingDataPath = "../../../Data/Training_data.csv";
 
         [HttpPost("test-predict")]
         public IActionResult TestPredict()
         {
-            var pipeline = _mlContext.Transforms.DropColumns(new[] { "CustomerID", "FirstName", "LastName", "Gender", "LastContactDate", "IsHighCost" })
-                .Append(_mlContext.Transforms.Categorical.OneHotEncoding("HealthStatus"))
-                .Append(_mlContext.Transforms.Concatenate("Features", "Age", "Height_cm", "Weight_kg", "HealthStatus"))
-                .Append(_mlContext.Regression.Trainers.Sdca(labelColumnName: "Cost", featureColumnName: "Features"));
-
-            var model = GetOrCreateModel(trainingDataPath, ',', true, pipeline);
-
-            var customer = new CustomerData
+            try
             {
-                CustomerID = 111,
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 50,
-                Gender = "male",
-                Height_cm = 160,
-                Weight_kg = 80,
-                HealthStatus = "fair",
-                LastContactDate = "2021-01-01",
-            };
+                var pipeline = _mlContext.Transforms.DropColumns(new[] { "CustomerID", "FirstName", "LastName", "Gender", "LastContactDate", "IsHighCost" })
+                    .Append(_mlContext.Transforms.Categorical.OneHotEncoding("HealthStatus"))
+                    .Append(_mlContext.Transforms.Concatenate("Features", "Age", "Height_cm", "Weight_kg", "HealthStatus"))
+                    .Append(_mlContext.Regression.Trainers.Sdca(labelColumnName: "Cost", featureColumnName: "Features"));
 
-            var prediction = _mlService.Predict(model, customer);
-            return Ok(Math.Round(prediction.Cost));
+                var model = GetOrCreateModel(trainingDataPath, ',', true, pipeline);
+
+                var customer = new CustomerData
+                {
+                    CustomerID = 111,
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Age = 50,
+                    Gender = "male",
+                    Height_cm = 160,
+                    Weight_kg = 80,
+                    HealthStatus = "fair",
+                    LastContactDate = "2021-01-01",
+                };
+
+                var prediction = _mlService.Predict(model, customer);
+
+                string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                Console.WriteLine(strExeFilePath);
+
+                return Ok(Math.Round(prediction.Cost));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost("predict")]
+        [Consumes("multipart/form-data")]
         public IActionResult Predict(IFormFile inputFile)
         {
             if (inputFile == null || inputFile.Length == 0)
@@ -60,7 +75,7 @@ namespace Proj_backend.Controllers
 
                 customers = PredictCost(customers, trainingDataPath);
 
-                //string outputPath = "././Output/test.csv";
+                //string outputPath = "../../Output/test.csv";
                 //using (var writer = new StreamWriter(outputPath))
 
                 //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

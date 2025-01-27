@@ -20,7 +20,8 @@ namespace Proj_backend.Controllers
     public class CombinedController : Controller
     {
         private const float THRESHOLD = 0.5f;
-        const string trainingDataPath = "././Data/Training_data.csv";
+        string trainingDataPath = Path.Combine(AppContext.BaseDirectory, "Data", "Training_data.csv");
+        //const string trainingDataPath = "./././Data/Training_data.csv";
         [HttpPost("predict-combined")]
         public IActionResult PredictCombined(IFormFile inputFile)
         {
