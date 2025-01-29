@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Proj_backend.Controllers
 {
-    [Route("api/linereg")]
     [ApiController]
+    [Route("api/linereg")]
+
     public class Controller_LinearRegression : BaseMLController<CustomerData, CostPrediction>
     {
         public Controller_LinearRegression()

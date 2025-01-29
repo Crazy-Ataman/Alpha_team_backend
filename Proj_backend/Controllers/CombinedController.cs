@@ -15,8 +15,8 @@ using System.IO.Compression;
 
 namespace Proj_backend.Controllers
 {
-    [Route("api/combined")]
     [ApiController]
+    [Route("api/combined")]
     public class CombinedController : Controller
     {
         private const float THRESHOLD = 0.5f;

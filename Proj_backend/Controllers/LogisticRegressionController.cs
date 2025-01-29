@@ -7,8 +7,8 @@ using Proj_backend.Services;
 
 namespace Proj_backend.Controllers
 {
-    [Route("api/logreg")]
     [ApiController]
+    [Route("api/logreg")]
     public class Controller_LogisticRegression : BaseMLController<CustomerData, IsHighCostPrediction>
     {
         public Controller_LogisticRegression()
