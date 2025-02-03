@@ -16,7 +16,6 @@ namespace Proj_backend.Controllers
 
         private const float THRESHOLD = 0.5f;
         string trainingDataPath = Path.Combine(AppContext.BaseDirectory, "Data", "Training_data.csv");
-        //const string trainingDataPath = "../../../Data/Training_data.csv";
 
         [HttpPost("test-predict")]
         public IActionResult TestPredict()

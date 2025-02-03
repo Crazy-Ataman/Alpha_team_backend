@@ -14,14 +14,12 @@ namespace Proj_backend.Controllers
 {
     [ApiController]
     [Route("api/linereg")]
-
     public class Controller_LinearRegression : BaseMLController<CustomerData, CostPrediction>
     {
         public Controller_LinearRegression()
             : base(Path.Combine(AppContext.BaseDirectory, "../../../ML_Models/LineReg.zip")) { }
 
         string trainingDataPath = Path.Combine(AppContext.BaseDirectory, "../../../Data/Training_data.csv");
-        //const string trainingDataPath = "../../../Data/Training_data.csv";
 
         [HttpPost("test-predict")]
         public IActionResult TestPredict()

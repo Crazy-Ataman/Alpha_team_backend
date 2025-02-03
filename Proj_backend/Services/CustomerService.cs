@@ -45,15 +45,14 @@ namespace Proj_backend.Services
                         };
 
                         customers.Add(customer);
-                        Console.WriteLine(customer.Cost);
                     }
                 }
-
                 Console.WriteLine("CSV file read successfully!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
             }
 
             return customers;
