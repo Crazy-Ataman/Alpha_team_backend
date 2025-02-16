@@ -12,7 +12,7 @@ namespace Proj_backend.Controllers
     public class Controller_LogisticRegression : BaseMLController<CustomerData, IsHighCostPrediction>
     {
         public Controller_LogisticRegression()
-            : base(Path.Combine(AppContext.BaseDirectory, "../../../ML_Models/LogReg.zip")) { }
+            : base(Path.Combine(AppContext.BaseDirectory, "ML_Models/LogReg.zip")) { }
 
         private const float THRESHOLD = 0.5f;
         string trainingDataPath = Path.Combine(AppContext.BaseDirectory, "Data", "Training_data.csv");

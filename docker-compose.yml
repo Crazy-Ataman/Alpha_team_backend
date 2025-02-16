@@ -1,0 +1,6 @@
+services:
+  proj_backend:
+    image: ${DOCKER_REGISTRY-}projbackend
+    build:
+      context: Proj_backend
+      dockerfile: Dockerfile
